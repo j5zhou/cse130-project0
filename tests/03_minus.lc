@@ -37,11 +37,11 @@ let TODO  = \i g n o r e -> i g n o r e
 -- do not modify text BEFORE this line
 --------------------------------------------------------------------------------
 
-let SKIP1 = TODO       -- (a)
-let DEC   = TODO       -- (b)
-let SUB   = TODO       -- (c)
-let ISZ   = TODO       -- (d)
-let EQL   = TODO       -- (e)
+let SKIP1 = \f p -> FST p (PAIR TRUE (f (SND p) )) (PAIR TRUE (SND p))      -- (a)
+let DEC   = \n -> SND ( n  (SKIP1 INC) (PAIR FALSE ZERO))
+let SUB   = \n1 n2 -> n2 DEC n1      -- (c)
+let ISZ   = \n -> n (\b -> FALSE) TRUE     -- (d)
+let EQL   = \n1 n2 ->  AND ( ISZ (SUB n2 n1) ) ( ISZ (SUB n1 n2) )
 
 --------------------------------------------------------------------------------
 -- do not modify text AFTER this line
@@ -60,7 +60,6 @@ eval skip1_true_zero :
 eval skip1_true_one :
   SKIP1 INC (PAIR TRUE ONE)
   =~> (\b -> b TRUE TWO)          -- PAIR TRUE TWO
-
 --------------------------------------------------------------------------------
 
 -- part (b)
@@ -78,7 +77,6 @@ eval decr_two :
   =~> ONE
 
 --------------------------------------------------------------------------------
-
 -- part (c)
 
 eval sub_two_zero :
@@ -98,7 +96,6 @@ eval sub_two_three :
   =~> ZERO
 
 --------------------------------------------------------------------------------
-
 -- part (d)
 
 eval isz_zero :
@@ -110,7 +107,6 @@ eval isz_one :
   =~> FALSE
 
 --------------------------------------------------------------------------------
-
 -- part (e)
 
 eval eq_zero_zero :
